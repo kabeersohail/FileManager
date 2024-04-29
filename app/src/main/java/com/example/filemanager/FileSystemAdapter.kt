@@ -28,7 +28,8 @@ class FileSystemAdapter(private val filePaths: List<String>) : RecyclerView.Adap
     }
 
 
-    private fun extractRootFolders() {
+    fun extractRootFolders() {
+        rootFolders.clear()
         val rootFolderSet = mutableSetOf<FolderX>()
 
         for (path in filePaths) {

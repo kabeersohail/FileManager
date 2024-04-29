@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             adapter.updateItems(
                 subFoldersAndFiles.map {
                     lastKnownPath = itemName.path
-                    FileSystemAdapter.FolderX(name = it, path = "${itemName.path}/$it/")
+                    FileSystemAdapter.FolderX(name = it, path = "${itemName.path}/$it")
                 }
             )
         }
@@ -59,6 +59,12 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         // Check if current path is not root, then navigate back
         if (lastKnownPath != "/") {
+
+            if(!lastKnownPath.contains("/")) {
+                adapter?.extractRootFolders()
+                return
+            }
+
             val parentFolderPath = lastKnownPath.substringBeforeLast("/")
             lastKnownPath = parentFolderPath
 
