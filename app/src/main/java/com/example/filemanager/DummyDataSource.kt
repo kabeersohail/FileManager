@@ -18,29 +18,3 @@ val filePaths = listOf(
     "Mosaic Hindi/Educational Content/Mosaic Magna Z+B+C All Crop Dose/Calcium/Calcium All Crop Dose.pdf",
     "Mosaic Hindi/Educational Content/Mosaic Magna Z+B+C All Crop Dose/Boron/Boron All Crop Dose.jpg"
 )
-
-// Convert file paths to FileSystemItem objects
-val items = filePaths.mapNotNull { path ->
-    val components = path.split('/')
-    val itemName = components.last()
-    if (itemName.startsWith(".")) {
-        // Hidden file, ignore it
-        null
-    } else if (itemName.contains('.')) {
-        // File
-        FileSystemItem.File(itemName, getFileType(itemName.substringAfterLast('.')))
-    } else {
-        // Folder
-        FileSystemItem.Folder(itemName)
-    }
-}
-
-// Helper function to get file type
-fun getFileType(extension: String): FileType {
-    return when (extension.toLowerCase()) {
-        "pdf" -> FileType.PDF
-        "jpg", "jpeg", "png", "gif" -> FileType.IMAGE
-        "mp4", "avi", "mov" -> FileType.VIDEO
-        else -> FileType.OTHER
-    }
-}
