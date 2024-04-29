@@ -10,18 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 // FileAdapter.kt
 class FileSystemAdapter(private val filePaths: List<String>) : RecyclerView.Adapter<FileSystemAdapter.FileViewHolder>() {
 
-    private val rootFolders: MutableList<String> = mutableListOf()
-    private var onItemClick: ((String) -> Unit)? = null
+    private val rootFolders: MutableList<FolderX> = mutableListOf()
+    private var onItemClick: ((FolderX) -> Unit)? = null
 
     init {
         extractRootFolders()
     }
 
-    fun setOnItemClickListener(listener: (String) -> Unit) {
+    fun setOnItemClickListener(listener: (FolderX) -> Unit) {
         onItemClick = listener
     }
 
-    fun updateItems(items: List<String>) {
+    fun updateItems(items: List<FolderX>) {
         rootFolders.clear()
         rootFolders.addAll(items)
         notifyDataSetChanged()
@@ -29,12 +29,12 @@ class FileSystemAdapter(private val filePaths: List<String>) : RecyclerView.Adap
 
 
     private fun extractRootFolders() {
-        val rootFolderSet = mutableSetOf<String>()
+        val rootFolderSet = mutableSetOf<FolderX>()
 
         for (path in filePaths) {
             val segments = path.split("/")
             if (segments.isNotEmpty()) {
-                rootFolderSet.add(segments.first())
+                rootFolderSet.add(FolderX(segments.first(), segments.first()))
             }
         }
 
@@ -59,12 +59,18 @@ class FileSystemAdapter(private val filePaths: List<String>) : RecyclerView.Adap
     inner class FileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val fileNameTextView: TextView = itemView.findViewById(R.id.folderName)
 
-        fun bind(item: String) {
-            fileNameTextView.text = item
+        fun bind(item: FolderX) {
+            fileNameTextView.text = item.name
             itemView.setOnClickListener {
                 onItemClick?.invoke(item)
             }
         }
     }
+
+    data class FolderX(
+        val name: String,
+        val path: String
+    )
+
 }
 

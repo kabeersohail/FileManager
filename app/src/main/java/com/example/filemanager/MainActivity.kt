@@ -18,30 +18,36 @@ class MainActivity : AppCompatActivity() {
 
         adapter.setOnItemClickListener { itemName ->
             // Fetch sub-folders and files for the clicked folder
-            val subFoldersAndFiles = fetchSubFoldersAndFiles(itemName)
+            val subFoldersAndFiles = fetchSubFoldersAndFiles(itemName.path)
             // Update the adapter with the contents of the clicked folder
-            adapter.updateItems(subFoldersAndFiles)
+            adapter.updateItems(
+                subFoldersAndFiles.map {
+                    FileSystemAdapter.FolderX(name = it, path = "${itemName.path}/$it")
+                }
+            )
         }
-
     }
 
     private fun fetchSubFoldersAndFiles(folderPath: String): List<String> {
         // Filter the list of file paths to get sub-folders and files for the given folder path
         val subFoldersAndFiles = filePaths.filter { filePath ->
-            // Check if the file path starts with the clicked folder path and is not the clicked folder itself
-            filePath.startsWith(folderPath) && filePath != folderPath
+            // Check if the file path starts with the clicked folder path
+            filePath.startsWith(folderPath)
         }
 
-        // We need to further process the filtered list to extract only immediate sub-folders
-        val immediateSubFolders = subFoldersAndFiles.mapNotNull { filePath ->
-            val segments = filePath.split("/")
+        // We need to further process the filtered list to extract immediate sub-folders and files
+        val immediateSubFoldersAndFiles = subFoldersAndFiles.mapNotNull { filePath ->
+            val relativePath = filePath.removePrefix(folderPath)
+            val segments = relativePath.split("/")
             if (segments.size > 1) {
-                segments[1] // Second segment represents immediate sub-folders
+                segments[1] // Second segment represents immediate sub-folders or files
             } else {
                 null
             }
         }.distinct()
 
-        return immediateSubFolders
+        return immediateSubFoldersAndFiles
     }
+
+
 }
