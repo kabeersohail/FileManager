@@ -1,0 +1,26 @@
+<!-- item_folder.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <!-- Folder Icon -->
+    <ImageView
+        android:id="@+id/folderIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_folder_24"
+        android:contentDescription="@null" />
+
+    <!-- Folder Name -->
+    <TextView
+        android:id="@+id/folderName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginStart="16dp"
+        android:text="Folder Name" />
+
+</LinearLayout>
